@@ -27,7 +27,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Request()) {
+  findAll() {
     return this.authService.findAll();
   }
 
