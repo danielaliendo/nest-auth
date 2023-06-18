@@ -50,25 +50,24 @@ export class AuthService {
 
     const { email, password } = loginUserDto;
 
-    try {
-      const user = await this.userModel.findOne({ email });
+    const user = await this.userModel.findOne({ email });
 
-      // Validate user password
-      if (!bcrypt.compareSync(password, user.password)) {
-        throw new UnauthorizedException('No valid credentials');
-      }
-
-      const { password: _, ...result } = user.toJSON();
-
-      return {
-        ...result,
-        token: this.getJwtToken({ id: user.id })
-      };
-
-    } catch (error) {
-      console.log(error)
+    if (!user) {
       throw new UnauthorizedException(`No user founded with ${email} email`);
     }
+
+    // Validate user password
+    if (!bcrypt.compareSync(password, user.password)) {
+      throw new UnauthorizedException('Invalid credentials. Password is wrong');
+    }
+
+    const { password: _, ...result } = user.toJSON();
+
+    return {
+      ...result,
+      token: this.getJwtToken({ id: user.id })
+    };
+
 
   }
 
