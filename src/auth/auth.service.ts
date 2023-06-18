@@ -67,7 +67,7 @@ export class AuthService {
 
     } catch (error) {
       console.log(error)
-      throw new UnauthorizedException(`'No user founded with ${email} email'`);
+      throw new UnauthorizedException(`No user founded with ${email} email`);
     }
 
   }
